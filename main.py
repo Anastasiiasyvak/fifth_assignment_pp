@@ -1,16 +1,52 @@
-# This is a sample Python script.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def encrypt(rawText, key):
+    encryptedText = []
+    for char in rawText:
+        if char.isupper():
+            encryptedText.append(chr((ord(char) + key - 65) % 26 + 65))
+        elif char.islower():
+            encryptedText.append(chr((ord(char) + key - 97) % 26 + 97))
+        else:
+            encryptedText.append(char)
+    return ''.join(encryptedText)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def decrypt(encryptedText, key1):
+    key1 = key1 % 26
+    decryptedText = []
+    for char in encryptedText:
+        if char.isupper():
+            decryptedText.append(chr((ord(char) - key1 - 65 + 26) % 26 + 65))
+        elif char.islower():
+            decryptedText.append(chr((ord(char) - key1 - 97 + 26) % 26 + 97))
+        else:
+            decryptedText.append(char)
+    return ''.join(decryptedText)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def main():
+    encryptedText = ""
+    while True:
+        command = int(input("\nChoose the command:\n1 - encrypt command\n2 - decrypt command\n"))
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+        if command == 1:
+            rawText = input("Enter the rawText:\n")
+            key = int(input("Enter your key:\n"))
+            print("Text:", rawText)
+            print("Key:", key)
+            encryptedText = encrypt(rawText, key)
+            print("Encrypted text:", encryptedText)
+
+        elif command == 2:
+            if encryptedText:
+                key1 = int(input("Enter key for decrypting:\n"))
+                decryptedText = decrypt(encryptedText, key1)
+                print("Decrypted text:", decryptedText)
+            else:
+                print("No encrypted text to decrypt.")
+
+        else:
+            print("Invalid command.")
+
+
+main()
